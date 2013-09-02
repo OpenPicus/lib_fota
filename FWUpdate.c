@@ -54,6 +54,7 @@ BYTE FWUpdateFTP(char *ServerIP, char *ServerPort, char *user, char *pwd, char *
 
 	
 	//	Check on network connection, if not present, error is returned
+	#if defined (FLYPORT_WF)
 	if (WFGetStat() != CONNECTED)
 	{
 		FWDebug("ERROR: Flyport not connected to a network!\n");
@@ -61,7 +62,15 @@ BYTE FWUpdateFTP(char *ServerIP, char *ServerPort, char *user, char *pwd, char *
 		report.subEvent = FTP_ERR_NOT_CREATED;
 		return report.event;
 	}
-	
+	#elif defined(FLYPORT_ETH)
+	if (!MACLinked)
+	{
+		FWDebug("ERROR: Flyport not connected to a network!\n");
+		report.event = ERR_NOT_CONNECTED;
+		report.subEvent = FTP_ERR_NOT_CREATED;
+		return report.event;
+	}
+	#endif
 	//	----- CONNECTION WITH FTP SERVER -----
 	opReport = FTPConnect(&ftpSock, ServerIP, ServerPort, user, pwd);
 	if (opReport != FTP_CONNECTED)
