@@ -163,9 +163,9 @@ BYTE FWUpdateFTP(char *ServerIP, char *ServerPort, char *user, char *pwd, char *
 		{
 			FWDebug("MD5 file download...\n\n");
 			if (FTPisConn(ftpSock))
-				FWDebug("Connesso\n");
+				FWDebug("Connected\n");
 			else
-				FWDebug("Disconnesso\n");
+				FWDebug("Disconnected\n");
 			opReport = FTPStreamOpen(ftpSock, md5file, RETR);
 			if (opReport == FTP_CONNECTED)
 			{	
